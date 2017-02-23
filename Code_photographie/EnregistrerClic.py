@@ -27,7 +27,7 @@ stop = True
 while(stop):
 
     # Permet de lire sur la webcam
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
 
     # On defini le type de la video pour enregistrer
     fourcc = cv2.cv.CV_FOURCC('i', 'Y', 'U', 'V')
@@ -72,7 +72,7 @@ while(stop):
         frame = frame[ premierPixelHauteur:dernierPixelHauteur, premierPixelLargeur:dernierPixelLargeur]
 
         # On enregistre l'image dans le bon dossier ATTENTION il faudra le changer
-        cv2.imwrite("//home//tanguy//Documents//Cassiopee//Data//"+str(nbrephoto)+".jpg", frame);
+        cv2.imwrite("//home//tanguy//Documents//Cassiopee//Data//Label1//"+str(nbrephoto)+".jpg", frame);
 
         # On rajoute une photo donc on incremente
         nbrephoto += 1

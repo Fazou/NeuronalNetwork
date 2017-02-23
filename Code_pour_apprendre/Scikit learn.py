@@ -1,79 +1,62 @@
 print(__doc__)
 
-# Author: Gael Varoquaux <gael dot varoquaux at normalesup dot org>
-# License: BSD 3 clause
-
-# Standard scientific Python imports
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
-
-# Import datasets, classifiers and performance metrics
 from sklearn import datasets, svm, metrics
-
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import roc_auc_score, log_loss
 import time
 
+nombrePhoto0 = 4
+nombrePhoto1 = 4
 
-N = 400
+nombrePhoto = nombrePhoto0 + nombrePhoto1
 
-# The digits dataset
-digits = datasets.load_digits()
 
-#print(len(digits.images))
-#print(len(digits[0]))
-
-#print(digits.images[0])
-
-img = cv2.imread("//home//tanguy//Documents//Cassiopee//Data//0.jpg", 1)
-
-cv2.imshow('Display window', img);
-
+img0 = cv2.imread("//home//tanguy//Documents//Cassiopee//Data//Label1//0.jpg", 1)
+a = img0.shape
+tailleImage = a[0] * a[1] * a[2]
+cv2.imshow('Display window', img0);
 while True:
     a = cv2.waitKey(1) # si l'utilisateur appuye sur une touche, on stock le resultat dans a
     if(a==1048689):
         break
-print("fini")
-print(img.shape)
-#print(img)
+img = img0.reshape(1, tailleImage)
 
+target = [1]
 
-# The data that we are interested in is made of 8x8 images of digits, let's
-# have a look at the first 4 images, stored in the `images` attribute of the
-# dataset.  If we were working from image files, we could load them using
-# matplotlib.pyplot.imread.  Note that each image must have the same size. For these
-# images, we know which digit they represent: it is given in the 'target' of
-# the dataset.
-images_and_labels = list(zip(digits.images, digits.target))
-for index, (image, label) in enumerate(images_and_labels[:4]):
-    plt.subplot(2, 4, index + 1)
-    plt.axis('off')
-    plt.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
-    plt.title('Training: %i' % label)
-# To apply a classifier on this data, we need to flatten the image, to
-# turn the data in a (samples, feature) matrix:
-n_samples = len(digits.images)
-print("n_sample : ")
-#print (n_samples)
-#print(digits.images)
-print(digits.images.shape)
+print("On a vu la photo maintenant on va tout importer")
 
-data = digits.images.reshape((n_samples, -1))
-print(data.shape)
+for i in range(1,nombrePhoto1):
+    image = cv2.imread("//home//tanguy//Documents//Cassiopee//Data//Label1//"+ str(i) + ".jpg", 1)
+    img0 = image.reshape(1,tailleImage)
+    img = np.concatenate((img, img0), axis=0)
+    target.append(1)
+for i in range(0,nombrePhoto0):
+    image = cv2.imread("//home//tanguy//Documents//Cassiopee//Data//Label0//"+ str(i) + ".jpg", 1)
+    img0 = image.reshape(1,tailleImage)
+    img = np.concatenate((img, img0), axis=0)
+    target.append(0)
+print(img)
+
+target = np.array(target)
+print(target)
 
 # Create a classifier: a support vector classifier
-classifier = svm.SVC(gamma=0.001,kernel='rbf')
+#classifier = svm.SVC(gamma=0.001,kernel='rbf')
+classifier = MLPClassifier(solver='lbfgs', alpha=1e-5,hidden_layer_sizes=(5, 2), random_state=1)
+
 # We learn the digits on the first half of the digits
-classifier.fit(data[:n_samples - N], digits.target[:n_samples - N])
+#classifier.fit(data[:n_samples - N], digits.target[:n_samples - N])
+classifier.fit(img,target)
+print("On a fini l'apprentissage")
 # Now predict the value of the digit on the second half:
-expected = digits.target[N:]
-predicted = classifier.predict(data[N:])
-print("Classification report for classifier yolo %syolo:\n%s\n"
-      % (classifier, metrics.classification_report(expected, predicted)))
-print("Confusion matrix:\n%s" % metrics.confusion_matrix(expected, predicted))
-images_and_predictions = list(zip(digits.images[N:], predicted))
-for index, (image, prediction) in enumerate(images_and_predictions[:4]):
-    plt.subplot(2, 4, index + 5)
-    plt.axis('off')
-    plt.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
-    plt.title('Prediction: %i' % prediction)
-plt.show()
+expected = target
+predicted = img
+
+Z = classifier.predict(img)
+print(Z)
+uniformResultat = sum(Z == target) / float(len(Z))
+
+print(uniformResultat)
