@@ -30,7 +30,7 @@ stop = True
 while(stop):
 
     # Permet de lire sur la webcam
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
 
     # On defini le type de la video pour enregistrer
     fourcc = cv2.cv.CV_FOURCC('i', 'Y', 'U', 'V')

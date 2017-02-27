@@ -14,7 +14,7 @@ nombrePhoto1 = 4
 nombrePhoto = nombrePhoto0 + nombrePhoto1
 
 
-img0 = cv2.imread("//home//tanguy//Documents//Cassiopee//Data//Label1//0.jpg", 1)
+img0 = cv2.imread("//home//tanguy//Documents//Cassiopee//Data//VraiPhoto//2.jpg", 1)
 a = img0.shape
 tailleImage = a[0] * a[1] * a[2]
 cv2.imshow('Display window', img0);
@@ -23,7 +23,7 @@ while True:
     if(a==1048689):
         break
 img = img0.reshape(1, tailleImage)
-
+print(img0)
 target = [1]
 
 print("On a vu la photo maintenant on va tout importer")
@@ -45,7 +45,7 @@ print(target)
 
 # Create a classifier: a support vector classifier
 #classifier = svm.SVC(gamma=0.001,kernel='rbf')
-classifier = MLPClassifier(solver='lbfgs', alpha=1e-5,hidden_layer_sizes=(5, 2), random_state=1)
+classifier = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=1)
 
 # We learn the digits on the first half of the digits
 #classifier.fit(data[:n_samples - N], digits.target[:n_samples - N])

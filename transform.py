@@ -26,8 +26,8 @@ class dataset:
 			except SystemError:
 				dataset.data.append(np.asarray( i.getdata(), dtype='uint8' ))
 		
-	 
+
 				
-image = dataset('C:/Users/lassana/Anaconda2/Machine_Learning/images')
+image = dataset("//home//tanguy//Documents//Cassiopee//NeuronalNetwork//Data//VraiPhoto")
 print(image.data) 
 print(image.target)
