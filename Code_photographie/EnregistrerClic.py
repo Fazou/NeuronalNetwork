@@ -9,6 +9,9 @@ import time
 # Defini le nombre de photo prise
 nbrephoto = 0
 
+# Defini quel est le label des photos prises
+label = 0
+
 # On fixe le nombre de pixel en hauteur et en largeur
 pixelHauteur = 480
 pixelLargeur = 640
@@ -69,10 +72,11 @@ while(stop):
         # On redefini la taille pour enregistrer les images qui nous seront utiles
         frame = cv2.resize(frame, (pixelLargeur, pixelHauteur))
 
-        frame = frame[ premierPixelHauteur:dernierPixelHauteur, premierPixelLargeur:dernierPixelLargeur]
+        frame = frame[premierPixelHauteur:dernierPixelHauteur, premierPixelLargeur:dernierPixelLargeur]
 
-        # On enregistre l'image dans le bon dossier ATTENTION il faudra le changer
-        cv2.imwrite("//home//tanguy//Documents//Cassiopee//Data//Label1//"+str(nbrephoto)+".jpg", frame);
+        # On enregistre l'image dans le bon dossier AMarche que sous linux
+        #cv2.imwrite("//home//tanguy//Documents//Cassiopee//NeuronalNetwork//Data//Label"+str(label)+"//"+str(nbrephoto)+".jpg", frame);
+        cv2.imwrite("..//Data//Label"+str(label)+"//"+str(nbrephoto)+".jpg", frame)
 
         # On rajoute une photo donc on incremente
         nbrephoto += 1
@@ -85,4 +89,4 @@ while(stop):
     cap.release()
     #out.release()
     cv2.destroyAllWindows()
-print 'nombre de photo final prise : ',nbrephoto
+print ('nombre de photo final prise : '+ str(nbrephoto))
