@@ -8,6 +8,11 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import roc_auc_score, log_loss
 import time
 from sklearn.model_selection import KFold
+from PseudoGradient import Gradient
+
+
+
+
 
 nombrePhoto0 = 30
 nombrePhoto1 = 30
@@ -24,10 +29,15 @@ while True:
     if(a==1048689):
         break
 img = img0.reshape(1, tailleImage)
+print(img)
 
 img = np.concatenate((img,np.array([[1]])),axis=1)
 print(img)
 target = [1]
+
+gradient = Gradient()
+print(gradient)
+
 
 print("On a vu la photo maintenant on va tout importer")
 

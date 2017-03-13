@@ -29,5 +29,5 @@ class dataset:
 
 				
 image = dataset("//home//tanguy//Documents//Cassiopee//NeuronalNetwork//Data//VraiPhoto")
-print(image.data) 
+print(len(image.data[0]))
 print(image.target)
