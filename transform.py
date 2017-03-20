@@ -28,6 +28,6 @@ class dataset:
 		
 	 
 				
-image = dataset('C:/Users/lassana/Anaconda2/Machine_Learning/images')
+image = dataset('/home/diabira/Cassiopee/NeuronalNetwork/Data/VraiPhoto')
 print(image.data) 
 print(image.target)
