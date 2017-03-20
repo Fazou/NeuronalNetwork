@@ -26,8 +26,8 @@ class dataset:
 			except SystemError:
 				dataset.data.append(np.asarray( i.getdata(), dtype='uint8' ))
 		
-	 
-				
+
 image = dataset('/home/diabira/Cassiopee/NeuronalNetwork/Data/VraiPhoto')
-print(image.data) 
+print(image.data)
+print(len(image.data[0]))
 print(image.target)

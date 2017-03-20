@@ -6,11 +6,12 @@ import cv2
 import sys
 import time
 
+
 # Defini le nombre de photo prise
 nbrephoto = 0
 
 # Defini quel est le label des photos prises
-label = 0
+label = 1
 
 # On fixe le nombre de pixel en hauteur et en largeur
 pixelHauteur = 480
@@ -76,7 +77,7 @@ while(stop):
 
         # On enregistre l'image dans le bon dossier AMarche que sous linux
         #cv2.imwrite("//home//tanguy//Documents//Cassiopee//NeuronalNetwork//Data//Label"+str(label)+"//"+str(nbrephoto)+".jpg", frame);
-        cv2.imwrite("..//Data//Label"+str(label)+"//"+str(nbrephoto)+".jpg", frame)
+        cv2.imwrite("..//..//Data//1seancephoto//cylindrebleu//"+str(nbrephoto)+".jpg", frame)
 
         # On rajoute une photo donc on incremente
         nbrephoto += 1
