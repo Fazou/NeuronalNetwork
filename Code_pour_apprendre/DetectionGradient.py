@@ -1,4 +1,3 @@
-print(__doc__)
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,21 +9,6 @@ import time
 from sklearn.model_selection import KFold
 from PseudoGradient import Gradient
 
-#Fonction qui prend en argument une arraylist image et qui rend un arraylist plus petit
-# ondoit donc avoir une liste de liste
-# k est la taille final de notre vecteur
-def reductionInput(img,k):
-    print(img)
-    racinek = int(np.sqrt(k))
-    nbrel = len(img)/racinek
-    nbrec = len(img[0])/racinek
-    print(nbrel)
-    print(nbrec)
-    for i in range(0,racinek):#ligne
-        for j in range(0,racinek):#colone
-            for k in range(i,i+nbrel):
-                for l in range(j,j+nbrec):
-                    a=5
 
 
 
@@ -38,18 +22,44 @@ nombrePhoto = nombrePhoto0 + nombrePhoto1
 img0 = cv2.imread("..//Data//2seancephoto//rien//1.jpg", 1)
 a = img0.shape
 tailleImage = a[0] * a[1] * a[2]
-cv2.imshow('Display window', img0)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
 
-reductionInput(img0,100)
+
+img0 = cv2.cvtColor( img0, cv2.COLOR_RGB2GRAY )
+
+cv2.imshow('Display window', img0);
+
+while True:
+    a = cv2.waitKey(1) # si l'utilisateur appuye sur une touche, on stock le resultat dans a
+    if(a==1048689):
+        cv2.destroyAllWindows()
+        break
+
+print("impression de la suite:")
+Ex= np.gradient(img0)
+print(len(Ex[0][0]))
+print(img0)
+A = np.sqrt(Ex[0]**2 + Ex[1]**2)
+
+cv2.imshow('Display window', Ex[0]);
+while True:
+    a = cv2.waitKey(1) # si l'utilisateur appuye sur une touche, on stock le resultat dans a
+    if(a==1048689):
+        cv2.destroyAllWindows()
+        break
+
+time.sleep(15)
+while(True):
+    a=4
+
 
 img = img0.reshape(1, tailleImage)
-#print(img)
 
 img = np.concatenate((img,np.array([[1]])),axis=1)
 #print(img)
 target = [1]
+
+#gradient = Gradient()
+#print(gradient)
 
 
 print("On a vu la photo maintenant on va tout importer")
