@@ -7,7 +7,7 @@ import sys
 import time
 
 #Defini le nombre dephoto prise
-nbrephoto = 827
+nbrephoto = 1652
 
 # On fixe le nombre de pixel en hauteur et en largeur
 pixelHauteur = 480
@@ -46,7 +46,7 @@ while(cap.isOpened()):
         frame = cv2.resize(frame, (pixelLargeur, pixelHauteur))
 
         # On enregistre l'image dans le bon dossier ATTENTION il faudra le changer
-        cv2.imwrite("..//..//Data//2seancephoto//rien//"+str(nbrephoto)+".jpg", frame);
+        cv2.imwrite("..//Data//2seancephoto//rien//"+str(nbrephoto)+".jpg", frame);
 
         # On rajoute une photo donc on incremente
         nbrephoto += 1
