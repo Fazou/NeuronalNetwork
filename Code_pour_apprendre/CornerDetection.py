@@ -2,15 +2,26 @@
 
 import cv2
 import numpy as np
+import time
 
-img = cv2.imread("//home//tanguy//Documents//Cassiopee//Data//1seancephoto//cylindrebleu//19.jpg")
-#cv2.imwrite('houghlines3.jpg',img)
+img = cv2.imread("//home//tanguy//Documents//Cassiopee//Data//1seancephoto//cylindrebleu//10.jpg")
+
+cv2.imwrite('houghlines3.jpg',img)
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-edges = cv2.Canny(gray,50,150,apertureSize = 3)
+cv2.imshow('Display window', gray)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+edges = cv2.Canny(gray,50,70,apertureSize = 3,L2gradient=False)
 cv2.imwrite('houghlines3.jpg',edges)
-lines = cv2.HoughLines(edges,1,np.pi/180,200)
 
-print(cv2.HoughLines(edges,1,np.pi/180,200))
+cv2.imshow('Display window', edges)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+lines = cv2.HoughLines(edges,1,np.pi/180,90)
+
+#print(cv2.HoughLines(edges,1,np.pi/180,200))
+print(lines)
 for rho,theta in lines[0]:
     a = np.cos(theta)
     b = np.sin(theta)
@@ -24,3 +35,6 @@ for rho,theta in lines[0]:
     cv2.line(img,(x1,y1),(x2,y2),(0,0,255),2)
 
 cv2.imwrite('houghlines3.jpg',img)
+cv2.imshow('Display window', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
