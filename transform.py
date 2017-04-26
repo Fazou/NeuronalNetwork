@@ -7,7 +7,7 @@ try:
     data = np.asarray( img, dtype='uint8' )
 except SystemError:
     data = np.asarray( img.getdata(), dtype='uint8' )
-print(data)"""	
+print(data)"""
 
 class dataset:
 	""" transform the image dataset into an array dataset """

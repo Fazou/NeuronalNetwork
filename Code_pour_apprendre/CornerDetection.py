@@ -4,21 +4,21 @@ import cv2
 import numpy as np
 import time
 
-img = cv2.imread("//home//tanguy//Documents//Cassiopee//Data//1seancephoto//cylindrebleu//4.jpg")
+img = cv2.imread("..//Data//2seancephoto//cylindrejaune//280.jpg",1)
 
 cv2.imwrite('houghlines3.jpg',img)
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 cv2.imshow('Display window', gray)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-edges = cv2.Canny(gray,50,70,apertureSize = 3,L2gradient=False)
+edges = cv2.Canny(gray,50,70,apertureSize = 3,L2gradient=True)
 cv2.imwrite('houghlines3.jpg',edges)
 
 cv2.imshow('Display window', edges)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-lines = cv2.HoughLines(edges,1,np.pi/180,90)
+lines = cv2.HoughLines(edges,100,np.pi/180,90)
 
 #print(cv2.HoughLines(edges,1,np.pi/180,200))
 for rho,theta in lines[0]:

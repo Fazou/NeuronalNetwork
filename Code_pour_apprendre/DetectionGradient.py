@@ -26,7 +26,7 @@ tailleImage = a[0] * a[1] * a[2]
 
 img0 = cv2.cvtColor( img0, cv2.COLOR_RGB2GRAY )
 
-cv2.imshow('Display window', img0);
+cv2.imshow('Display window', img0)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 

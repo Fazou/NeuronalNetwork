@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 
 
 img = cv2.imread("//home//tanguy//Documents//Cassiopee//Data//1seancephoto//cylindrejaune//20.jpg")
+
 # Output dtype = cv2.CV_8U
 sobelx8u = cv2.Sobel(img, cv2.CV_8U, 1, 0, ksize=5)
 # Output dtype = cv2.CV_64F. Then take its absolute and convert to cv2.CV_8U

@@ -12,31 +12,7 @@ from PseudoGradient import Gradient
 #import os
 #os.chdir("//home//tanguy//Documents//Cassiopee//NeuronalNetwork//Data//Imagemodifier")
 import pandas as pd
-
-
-#Fonction qui prend en argument une arraylist image et qui rend un arraylist plus petit
-# on doit donc avoir une liste de liste
-# taille_vecteur est la taille final de notre vecteur
-def reductionInput(img,taille_vecteur):
-    racine = int(np.sqrt(taille_vecteur))
-
-    nbrel = len(img)/racine
-    nbrec = len(img[0])/racine
-
-    petit_array = [0]*taille_vecteur
-    for i in range(0,racine):#ligne
-        for j in range(0,racine):#colonne
-            moyenne = 0
-            for k in range(i*nbrel,(i+1)*nbrel):
-                for l in range(j*nbrec,(j+1)*nbrec):
-                    if(img[k][l][1] < 150 and img[k][l][1] > 50 and img[k][l][2] < 150 and img[k][l][2] > 50 and img[k][l][0] < 20 and img[k][l][0] > 0):# [0, 50, 50], [20, 150, 150])
-                        moyenne += 1
-            petit_array[10*i+j] = moyenne#/float(nbrel*nbrec)
-    print(','.join(str(n) for n in petit_array))
-    return(np.array(petit_array))
-    #return(petit_array)
-    #return(','.join(str(n) for n in petit_array))
-
+import matplotlib.pyplot as plt
 
 
 
@@ -52,25 +28,13 @@ img0 = cv2.imread("..//Data//2seancephoto//cylindrejaune//10.jpg", 1)
 if(img0 != None):
     a = img0.shape
     tailleImage = a[0] * a[1] * a[2]
-    cv2.imshow('Display window', img0)
+
+    #cv2.imshow('Display window', img0)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-    Ubuntu or Debian, install libgtk2.0 - dev and pkg - config, then re - run cmake or configure script) in cvShowImage, file / io / opencv / modules / highgui / src / window.cpp
-
-print("Debut de reduction input")
-X = reductionInput(img0,100).reshape(1,100)
-#X = [reductionInput(img0,100)]
-print(X)
-print(len(X))
-print(len(X[0]))
-print("Fin de reduction input")
 
 img = img0.reshape(1, tailleImage)
-print(img)
-print(len(img))
-print(len(img[0]))
-#img = np.concatenate((img,np.array([[0]])),axis=1)
 
 target = []
 
@@ -82,11 +46,8 @@ for i in range(0,nombrePhoto0):
     image = cv2.imread("..//Data//2seancephoto//rien//"+ str(i) + ".jpg", 1)
     if (image != None):
         img0 = image.reshape(1,tailleImage)
-        X0 = reductionInput(image,100).reshape(1,100)
-        #img0 = np.concatenate((img0, np.array([[0]])), axis=1)
+        
         img = np.concatenate((img, img0), axis=0)
-        X = np.concatenate((X,X0),axis = 0)
-        #X.append(reductionInput(image,100))
         target.append(0)
     else:
         nombreReelPhoto1 -= 1
