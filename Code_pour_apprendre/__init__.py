@@ -10,7 +10,6 @@ for i in range(0,1000):
     try:
         orig = cv2.imread("..//Data//2seancephoto//cylindrejaune//" + str(i) + ".jpg", 1)
 
-
         sobel_dx = cv2.Sobel(orig, cv2.CV_64F, 1, 0, ksize=5)
         sobel_dy = cv2.Sobel(orig, cv2.CV_64F, 0, 1, ksize=5)
         magnitude_image = cv2.magnitude(sobel_dx,sobel_dy,sobel_dx);

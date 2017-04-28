@@ -56,7 +56,7 @@ if(img0 != None):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-    Ubuntu or Debian, install libgtk2.0 - dev and pkg - config, then re - run cmake or configure script) in cvShowImage, file / io / opencv / modules / highgui / src / window.cpp
+    #Ubuntu or Debian, install libgtk2.0 - dev and pkg - config, then re - run cmake or configure script) in cvShowImage, file / io / opencv / modules / highgui / src / window.cpp
 
 print("Debut de reduction input")
 X = reductionInput(img0,100).reshape(1,100)
