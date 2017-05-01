@@ -21,16 +21,16 @@ gray = cv2.cvtColor(img1,cv2.COLOR_BGR2GRAY)
 
 gray = np.float32(gray)
 list1 = [0,1,3,5,7,9,11,13,15,17,19]
-list = [0,65,230,147,169,164,68,680,147,760]
+list = [0,65,230,147,169,164,68,650,147,760]
 #for i in range(1,2):
 for i in list:
     print(i)
-    img1 = cv2.imread("..//Data//2seancephoto//cylindrejaune//"+str(i)+".jpg", 1)
+    img1 = cv2.imread("..//Data//2seancephoto//rien//"+str(i)+".jpg", 1)
     gray = cv2.cvtColor(img1,cv2.COLOR_BGR2GRAY)
     try:
         dst = cv2.cornerHarris(gray,2,9,10**(-7))
     except:
-        print("coucou"    )
+        print("coucou")
     #print(dst)
     print(len(dst))
     print(len(dst[0]))

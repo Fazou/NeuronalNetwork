@@ -29,16 +29,21 @@ nombrePhoto = [nombrePhoto0,nombrePhoto1,nombrePhoto2]
 nombreReelPhoto = nombrePhoto
 
 resultat=[]
+resultatParam = []
+resultatFauxPositif=[]
+resultatFauxNegatif=[]
 
 
-
-for nbre_cluster in range(2,3):
+for nbre_cluster in range(100,101):
 
     K = kfolds(seed=3894,k=5,N=max(nombrePhoto))
 
     n_split = 5
     kf = KFold(n_splits=n_split,shuffle = True)
     uniformResultat = [0]*n_split
+    uniformResultatFauxPositif = [0]*n_split
+    uniformResultatFauxNegatif = [0]*n_split
+
 
 
     for n in range(0,n_split):
@@ -137,7 +142,7 @@ for nbre_cluster in range(2,3):
         Y_k_test = target_test
 
         #classifier = svm.SVC(gamma=0.001,kernel='rbf')
-        classifier = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=1)
+        classifier = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(20, 5), random_state=1)
 
         #classifier.fit(data[:n_samples - N], digits.target[:n_samples - N])
         classifier.fit(X_k,Y_k)
@@ -146,14 +151,24 @@ for nbre_cluster in range(2,3):
         Z = classifier.predict(X_k_test)
         #print(Z)
         #print(Y_k_test)
-        print(len(X_k))
-        print(len(X_k_test))
-        print(len(X))
 
         uniformResultat[n] = sum(Z == Y_k_test) / float(len(Z))
+        for l in range(len(Z)):
+            if(Y_k_test[l]==0):
+                uniformResultatFauxPositif[n] += (Z[l]==1)
+                # il n y a pas de cylindre mais le programme en detecte un
+            if(Y_k_test[l]==1):
+                uniformResultatFauxNegatif[n] += (Z[l]==0)
+                # il y a un cylindre mais le programme n en detecte pas
+
+        uniformResultatFauxPositif[n] = uniformResultatFauxPositif[n]/float(len(Z))
+        uniformResultatFauxNegatif[n] = uniformResultatFauxNegatif[n]/float(len(Z))
+
         n = n + 1
-        print(uniformResultat)
+        print(uniformResultat,uniformResultatFauxNegatif,uniformResultatFauxPositif)
 
     resultat.append(sum(uniformResultat)/5)
-    resultat.append(nbre_cluster*100)
-    print(resultat)
+    resultatFauxPositif.append(sum(uniformResultatFauxPositif)/5)
+    resultatFauxNegatif.append(sum(uniformResultatFauxNegatif)/5)
+    resultatParam.append(nbre_cluster*1)
+    print(resultat,resultatParam,resultatFauxNegatif,resultatFauxPositif)

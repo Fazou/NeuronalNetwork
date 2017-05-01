@@ -9,10 +9,10 @@ print(cv2.__version__)
 # Load the images
 
 X = []
-for i in range(296,297):
+for i in range(0,2):
     print(i)
     # Convert them to grayscale
-    imgg = cv2.imread("..//Data//2seancephoto//rien//"+str(i)+".jpg", 1)
+    imgg = cv2.imread("..//Data//2seancephoto//cylindrejaune//"+str(i)+".jpg", 1)
     imgg = cv2.cvtColor(imgg,cv2.COLOR_BGR2GRAY)
 
     # SURF extraction
