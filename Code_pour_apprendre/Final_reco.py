@@ -1,18 +1,17 @@
-
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 from sklearn import datasets, svm, metrics
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import roc_auc_score, log_loss
-import time
 from sklearn.model_selection import KFold
-from PseudoGradient import Gradient
-#import os
-#os.chdir("//home//tanguy//Documents//Cassiopee//NeuronalNetwork//Data//Imagemodifier")
 import pandas as pd
 from sklearn import mixture
 import random
+import time
+
+start = time.time()
+
 def kfolds(k,N,seed=None):
     random.seed(seed)
     out = [ list() for _ in range(k) ]
@@ -32,11 +31,16 @@ resultat=[]
 resultatParam = []
 resultatFauxPositif=[]
 resultatFauxNegatif=[]
+categorie = ["rien", "cylindrejaune", "cylindrebleu"]
 
+#x,y=0,0
+#w,h=640-1,480-1
+x,y=0+75,25
+w,h=680-125-1,480-25-1
 
-for nbre_cluster in range(100,101):
+for nbre_cluster in range(400,401):
 
-    K = kfolds(seed=3894,k=5,N=max(nombrePhoto))
+    K = kfolds(seed=4863452,k=5,N=max(nombrePhoto))
 
     n_split = 5
     kf = KFold(n_splits=n_split,shuffle = True)
@@ -59,11 +63,12 @@ for nbre_cluster in range(100,101):
             train = sum(K[j:j + 1], train)
         test = K[n]
 
-        categorie = ["rien","cylindrejaune","cylindrebleu"]
         for k in range (0,3):
             for i in train:
                 image = cv2.imread("..//Data//2seancephoto//"+categorie[k]+"//"+ str(i) + ".jpg", 1)
                 if (type(image) != type(None)):
+                    #image = image[y:h, x:w]  # Crop from x, y, w, h -> 100, 200, 300, 400
+                    # NOTE: its img[y: y + h, x: x + w] and *not* img[x: x + w, y: y + h]
 
                     kp_scene = detector.detect(image)
                     k_scene, d_scene = descriptor.compute(image, kp_scene)
@@ -87,7 +92,10 @@ for nbre_cluster in range(100,101):
         for k in range (0,3):
             for i in train:
                 image = cv2.imread("..//Data//2seancephoto//"+categorie[k]+"//"+ str(i) + ".jpg", 1)
+
                 if (type(image) != type(None)):
+                    #image = image[y:h, x:w]  # Crop from x, y, w, h -> 100, 200, 300, 400
+
                     kp_scene = detector.detect(image)
                     k_scene, d_scene = descriptor.compute(image, kp_scene)
                     try:
@@ -100,14 +108,16 @@ for nbre_cluster in range(100,101):
                         if (k == 2):
                             target.append(1)
                     except:
-                        #print(str(i) + " ; " + str(k) + " plante du poney")
-                        ae = 4
+                        print(str(i) + " ; " + str(k) + " bug")
 
                 else:
                     nombreReelPhoto[k] -= 1
             for i in test:
                 image = cv2.imread("..//Data//2seancephoto//"+categorie[k]+"//"+ str(i) + ".jpg", 1)
+
                 if (type(image) != type(None)):
+                    #image = image[y:h, x:w]  # Crop from x, y, w, h -> 100, 200, 300, 400
+
                     kp_scene = detector.detect(image)
                     k_scene, d_scene = descriptor.compute(image, kp_scene)
                     try:
@@ -120,21 +130,27 @@ for nbre_cluster in range(100,101):
                         if (k == 2):
                             target_test.append(1)
                     except:
-                        #print(str(i) +" ; " + str(k)+" plante du poney")
+                        print(str(i) +" ; " + str(k)+" bug")
                         ae = 4
                 else:
                     nombreReelPhoto[k] -= 1
 
-        print(histo)
-        print(type(histo))
         np.savetxt("..//Data//Imagemodifier//donee.csv", histo, delimiter =',')
+        np.savetxt("..//Data//Imagemodifier//donee_test.csv", histo_test, delimiter =',')
         np.savetxt("..//Data//Imagemodifier//target.csv", target, delimiter =',')
+        np.savetxt("..//Data//Imagemodifier//target_test.csv", target_test, delimiter =',')
+
         histo = pd.read_csv("..//Data//Imagemodifier//donee.csv")
         target = pd.read_csv("..//Data//Imagemodifier//target.csv")
+        histo_test = pd.read_csv("..//Data//Imagemodifier//donee_test.csv")
+        target_test = pd.read_csv("..//Data//Imagemodifier//target_test.csv")
 
         histo = histo.as_matrix()
         target = target.as_matrix()
+        histo_test = histo_test.as_matrix()
+        target_test = target_test.as_matrix()
         target= target.reshape(1,-1)[0]
+        target_test= target_test.reshape(1,-1)[0]
 
         X_k = histo
         Y_k = target
@@ -142,7 +158,7 @@ for nbre_cluster in range(100,101):
         Y_k_test = target_test
 
         #classifier = svm.SVC(gamma=0.001,kernel='rbf')
-        classifier = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(20, 5), random_state=1)
+        classifier = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(90, 44, 5), random_state=1)
 
         #classifier.fit(data[:n_samples - N], digits.target[:n_samples - N])
         classifier.fit(X_k,Y_k)
@@ -164,8 +180,9 @@ for nbre_cluster in range(100,101):
         uniformResultatFauxPositif[n] = uniformResultatFauxPositif[n]/float(len(Z))
         uniformResultatFauxNegatif[n] = uniformResultatFauxNegatif[n]/float(len(Z))
 
-        n = n + 1
         print(uniformResultat,uniformResultatFauxNegatif,uniformResultatFauxPositif)
+        end = time.time()
+        print(end - start)
 
     resultat.append(sum(uniformResultat)/5)
     resultatFauxPositif.append(sum(uniformResultatFauxPositif)/5)

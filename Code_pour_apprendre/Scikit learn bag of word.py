@@ -158,7 +158,6 @@ for nbre_cluster in range(1,10):
         #print(Z)
         #print(Y_k_test)
         uniformResultat[n] = sum(Z == Y_k_test) / float(len(Z))
-        n = n + 1
         print(uniformResultat)
         print("nbre d'erreur : " + str(nbre_erreur))
 

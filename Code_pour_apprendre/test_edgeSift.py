@@ -8,46 +8,26 @@ from sklearn.externals import joblib
 from scipy.cluster.vq import *
 from sklearn.preprocessing import StandardScaler
 print(cv2. __version__)
-import sys
-#print (sys.version)
-#print(cv2.version)
-img = cv2.imread("..//Data//2seancephoto//cylindrejaune//0.jpg", 1)
-gray= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-fea_det = cv2.FeatureDetector_create("SIFT")
-des_ext = cv2.DescriptorExtractor_create("SIFT")
-print(fea_det)
-print(des_ext)
-kpts = fea_det.detect(img)
-kpts, des = des_ext.compute(img, kpts)
-des_list = []
 
-for i in (0,1):
+for i in range(0,1500):
     print(i)
-    img = cv2.imread("..//Data//2seancephoto//cylindrejaune//"+str(i)+".jpg", 1)
-    cv2.imshow('Display window', img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    kpts = fea_det.detect(img)
-    print(i)
-    kpts, des = des_ext.compute(img, kpts)
-    des_list.append((i, des))
+    img = cv2.imread("..//Data//2seancephoto//cylindrebleu//"+str(i)+".jpg", 1)
 
-# Stack all the descriptors vertically in a numpy array
-descriptors = des_list[0][1]
-for i, descriptor in des_list[1:]:
-    print(i)
-    descriptors = np.vstack((descriptors, descriptor))
+    # Initiate STAR detector
+    orb = cv2.ORB()
 
-k = 100
-voc, variance = kmeans(descriptors, k, 1)
-#sift = cv2.xfeatures2d.SIFT_create()
-#detector = cv2.SURF()
-#sift = cv2.SIFT()
-#kp = sift.detect(gray,None)
+    # find the keypoints with ORB
+    kp = orb.detect(img, None)
 
-#img=cv2.drawKeypoints(gray,kp)
+    # compute the descriptors with ORB
+    kp, des = orb.compute(img, kp)
 
-cv2.imwrite('sift_keypoints.jpg',img)
+    # draw only keypoints location,not size and orientation
+    try:
+        img2 = cv2.drawKeypoints(img, kp, color=(0, 255, 0), flags=0)
 
-
-
+        cv2.imshow('Display window', img2)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+    except:
+        print("Exitse pas"+str(i))
