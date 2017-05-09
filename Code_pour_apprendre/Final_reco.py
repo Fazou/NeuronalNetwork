@@ -38,7 +38,7 @@ categorie = ["rien", "cylindrejaune", "cylindrebleu"]
 x,y=0+75,25
 w,h=680-125-1,480-25-1
 
-for nbre_cluster in range(400,401):
+for nbre_cluster in range(2,3):
 
     K = kfolds(seed=4863452,k=5,N=max(nombrePhoto))
 
@@ -52,8 +52,10 @@ for nbre_cluster in range(400,401):
 
     for n in range(0,n_split):
         print(n)
-        detector = cv2.FeatureDetector_create("ORB")  # SURF
-        descriptor = cv2.DescriptorExtractor_create("ORB")  # BRIEF
+        #detector = cv2.FeatureDetector_create("ORB")  # ORB
+        #descriptor = cv2.DescriptorExtractor_create("ORB")  # BRISK
+        #orb = cv2.ORB(edgeThreshold=10, patchSize=2, nlevels=6, scaleFactor=2.3, WTA_K=2,scoreType=cv2.ORB_HARRIS_SCORE, firstLevel=0, nfeatures=200)
+        orb =  cv2.ORB()
         X=[]
 
         list1 = [i for i in range(0,n_split)]
@@ -63,6 +65,7 @@ for nbre_cluster in range(400,401):
             train = sum(K[j:j + 1], train)
         test = K[n]
 
+
         for k in range (0,3):
             for i in train:
                 image = cv2.imread("..//Data//2seancephoto//"+categorie[k]+"//"+ str(i) + ".jpg", 1)
@@ -70,8 +73,13 @@ for nbre_cluster in range(400,401):
                     #image = image[y:h, x:w]  # Crop from x, y, w, h -> 100, 200, 300, 400
                     # NOTE: its img[y: y + h, x: x + w] and *not* img[x: x + w, y: y + h]
 
-                    kp_scene = detector.detect(image)
-                    k_scene, d_scene = descriptor.compute(image, kp_scene)
+                    #kp_scene = detector.detect(image)
+                    kp_scene = orb.detect(image)
+
+
+                    #k_scene, d_scene = descriptor.compute(image, kp_scene)
+                    k_scene, d_scene = orb.compute(image, kp_scene)
+
                     try:
                         for j in range(0, len(d_scene)):
                             X.append(d_scene[j])
@@ -96,8 +104,10 @@ for nbre_cluster in range(400,401):
                 if (type(image) != type(None)):
                     #image = image[y:h, x:w]  # Crop from x, y, w, h -> 100, 200, 300, 400
 
-                    kp_scene = detector.detect(image)
-                    k_scene, d_scene = descriptor.compute(image, kp_scene)
+                    #kp_scene = detector.detect(image)
+                    #k_scene, d_scene = descriptor.compute(image, kp_scene)
+                    kp_scene = orb.detect(image)
+                    k_scene, d_scene = orb.compute(image, kp_scene)
                     try:
                         a = sum(gmm.predict_proba(d_scene))
                         histo.append(a)
@@ -118,8 +128,11 @@ for nbre_cluster in range(400,401):
                 if (type(image) != type(None)):
                     #image = image[y:h, x:w]  # Crop from x, y, w, h -> 100, 200, 300, 400
 
-                    kp_scene = detector.detect(image)
-                    k_scene, d_scene = descriptor.compute(image, kp_scene)
+                    #kp_scene = detector.detect(image)
+                    #k_scene, d_scene = descriptor.compute(image, kp_scene)
+                    kp_scene = orb.detect(image)
+                    k_scene, d_scene = orb.compute(image, kp_scene)
+
                     try:
                         a = sum(gmm.predict_proba(d_scene))
                         histo_test.append(a)
@@ -135,15 +148,15 @@ for nbre_cluster in range(400,401):
                 else:
                     nombreReelPhoto[k] -= 1
 
-        np.savetxt("..//Data//Imagemodifier//donee.csv", histo, delimiter =',')
-        np.savetxt("..//Data//Imagemodifier//donee_test.csv", histo_test, delimiter =',')
-        np.savetxt("..//Data//Imagemodifier//target.csv", target, delimiter =',')
-        np.savetxt("..//Data//Imagemodifier//target_test.csv", target_test, delimiter =',')
+        np.savetxt("..//Data//Imagemodifier//donee"+str(n)+".csv", histo, delimiter =',')
+        np.savetxt("..//Data//Imagemodifier//donee_test"+str(n)+".csv", histo_test, delimiter =',')
+        np.savetxt("..//Data//Imagemodifier//target"+str(n)+".csv", target, delimiter =',')
+        np.savetxt("..//Data//Imagemodifier//target_test"+str(n)+".csv", target_test, delimiter =',')
 
-        histo = pd.read_csv("..//Data//Imagemodifier//donee.csv")
-        target = pd.read_csv("..//Data//Imagemodifier//target.csv")
-        histo_test = pd.read_csv("..//Data//Imagemodifier//donee_test.csv")
-        target_test = pd.read_csv("..//Data//Imagemodifier//target_test.csv")
+        histo = pd.read_csv("..//Data//Imagemodifier//donee"+str(n)+".csv")
+        target = pd.read_csv("..//Data//Imagemodifier//target"+str(n)+".csv")
+        histo_test = pd.read_csv("..//Data//Imagemodifier//donee_test"+str(n)+".csv")
+        target_test = pd.read_csv("..//Data//Imagemodifier//target_test"+str(n)+".csv")
 
         histo = histo.as_matrix()
         target = target.as_matrix()
@@ -158,8 +171,8 @@ for nbre_cluster in range(400,401):
         Y_k_test = target_test
 
         #classifier = svm.SVC(gamma=0.001,kernel='rbf')
-        classifier = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(90, 44, 5), random_state=1)
-
+        classifier = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(7, 4), random_state=1)
+        #(90, 44, 5)
         #classifier.fit(data[:n_samples - N], digits.target[:n_samples - N])
         classifier.fit(X_k,Y_k)
         print("On a fini l'apprentissage")

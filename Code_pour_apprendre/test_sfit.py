@@ -57,7 +57,7 @@ resultatFauxNegatif = []
 best_i = 0
 best_j = 0
 best = 0
-
+#0.012
 param1 = [200]
 param2 = [110]
 uniformResultat = [0]*len(param1)
@@ -87,12 +87,14 @@ for i in range(0,len(param1)):
             X_k_test = X_total[test]
             Y_k_test = Y_total[test]
 
-            #classifier = svm.SVC(gamma=0.001,kernel='rbf')
+            #classifier = svm.SVC(gamma=0.001*param1[i],kernel='rbf',degree=2)
             classifier = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(param1[i],param2[j],40), random_state=1)
 
             classifier.fit(X_k,Y_k)
             Z = classifier.predict(X_k_test)
-
+            """for pred in range(len(Z)):
+                if(Z[pred]==Y_k_test[pred]):
+                    print(pred,Y_k_test[pred])"""
             uniformResultat_temporaire[n] = (sum(Z == Y_k_test) / float(len(Z)))
             #print(uniformResultat_temporaire)
         uniformResultat[i][j] = (sum(uniformResultat_temporaire)/float(len(uniformResultat_temporaire)))
