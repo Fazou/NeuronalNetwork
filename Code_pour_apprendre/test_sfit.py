@@ -88,7 +88,7 @@ for i in range(0,len(param1)):
             Y_k_test = Y_total[test]
 
             #classifier = svm.SVC(gamma=0.001*param1[i],kernel='rbf',degree=2)
-            classifier = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(param1[i],param2[j],40), random_state=1)
+            classifier = MLPClassifier(solver='lbfgs', alpha=1e-3, hidden_layer_sizes=(param1[i],param2[j],40), random_state=1)
 
             classifier.fit(X_k,Y_k)
             Z = classifier.predict(X_k_test)
