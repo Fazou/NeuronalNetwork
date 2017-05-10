@@ -19,7 +19,7 @@ nombrePhoto1 = 30
 nombrePhoto = nombrePhoto0 + nombrePhoto1
 
 
-img0 = cv2.imread("..//Data//2seancephoto//rien//168.jpg", 1)
+img0 = cv2.imread("..//Data//2seancephoto//rien//450.jpg", 1)
 a = img0.shape
 tailleImage = a[0] * a[1] * a[2]
 
@@ -75,7 +75,7 @@ for i in range(len(grad_h[0])):
     #Le bin indique l'intensite de la couleur
     #Calculons enfin la proximite geographique des valeurs au sein du bin.
 
-    blabla = np.zeros((boxNbr-2,0))
+    #    blabla = np.zeros((boxNbr-2,0))
 
     var = np.array([])
     med = np.array([])
