@@ -35,10 +35,9 @@ nombrePhoto1 = 1000
 nombrePhoto2 = 1000
 
 nombrePhoto = [nombrePhoto0,nombrePhoto1,nombrePhoto2]
-nombreReelPhoto = nombrePhoto
 
 #resize image
-size = 10
+size = 70
 
 resultat=[]
 resultatParam = []
@@ -49,13 +48,10 @@ categorie = ["rien", "cylindrejaune", "cylindrebleu"]
 n_split = 5
 
 
-K = kfolds(seed=4863452,k=n_split,N=max(nombrePhoto))
-
+K = kfolds(seed=486684,k=n_split,N=max(nombrePhoto))
 
 
 scores = []
-
-
 
 
 for n in range(0, n_split):
@@ -75,12 +71,16 @@ for n in range(0, n_split):
     for k in range(0, 3):
         for i in train:
             try:
-                Img = Image.open("Data/2seancephoto/rien/" + str(i) + ".jpg")
+                Img = Image.open("Data/2seancephoto/"+categorie[k]+"/" + str(i) + ".jpg")
                 #Img = Image.open("//home//tanguy//Documents//Cassiopee//NeuronalNetwork//Data//2seancephoto//"+categorie[k]+"//" + str(i) + ".jpg")
+                Img = Img.convert('LA')
                 Img = Img.resize((size, size), PIL.Image.ANTIALIAS)
-                Img = img_to_array(Img)
+                Img = list(Img.getdata())
                 Img = np.array(Img)
+                Img = Img[:, 0]
+                Img = Img.reshape(size, size, 1)
                 X_train.append(Img)
+
                 if (k == 0):
                     Y_train.append(0)
                 if (k == 1):
@@ -89,14 +89,20 @@ for n in range(0, n_split):
                     Y_train.append(1)
             except:
                 blabla = 1
+
+
         for i in test:
             try:
-                Img = Image.open("Data/2seancephoto/rien/" + str(i) + ".jpg")
+                Img = Image.open("Data/2seancephoto/"+categorie[k]+"/" + str(i) + ".jpg")
                 #Img = Image.open("//home//tanguy//Documents//Cassiopee//NeuronalNetwork//Data//2seancephoto//"+categorie[k]+"//" + str(i) + ".jpg")
+                Img = Img.convert('LA') #Pour noir et blanc
                 Img = Img.resize((size, size), PIL.Image.ANTIALIAS)
-                Img = img_to_array(Img)
+                Img = list(Img.getdata()) #Pour noir et blanc sinon mettre : Img = img_to_array(Img)
                 Img = np.array(Img)
+                Img = Img[:, 0] #Que noir et blanc !
+                Img = Img.reshape(size, size, 1) #Que noir et blanc encore !
                 X_test.append(Img)
+
                 if (k == 0):
                     Y_test.append(0)
                 if (k == 1):
@@ -117,8 +123,11 @@ for n in range(0, n_split):
     X_train = X_train / 255.0
     X_test = X_test / 255.0
 
+
+
     Y_train = np_utils.to_categorical(Y_train)
     Y_test = np_utils.to_categorical(Y_test)
+
 
     print("Size of training dataset")
     print(X_train.shape)
@@ -136,7 +145,7 @@ for n in range(0, n_split):
     #Let's build The CNN!!!!!
     num_classes = 2
     model = Sequential()
-    model.add(Conv2D(32, (3, 3), input_shape=(size, size, 3), padding='same', activation='relu', kernel_constraint=maxnorm(3)))
+    model.add(Conv2D(32, (3,3), input_shape=(size, size,1), padding='same', activation='relu', kernel_constraint=maxnorm(3)))
     model.add(Dropout(0.2))
     model.add(Conv2D(32, (3, 3), activation='relu', padding='same', kernel_constraint=maxnorm(3)))
     model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -145,7 +154,7 @@ for n in range(0, n_split):
     model.add(Dropout(0.5))
     model.add(Dense(num_classes, activation='softmax'))
     # Compile model
-    epochs = 1
+    epochs = 10
     lrate = 0.01
     decay = lrate/epochs
 
@@ -160,10 +169,11 @@ for n in range(0, n_split):
     #let's fit our model
 
     model.fit(X_train, Y_train, validation_data=(X_test, Y_test), epochs=epochs, batch_size=32)
-    model.save_weights("..//weigths.h5")
+    model.save_weights("..//weigths"+str(n)+".h5")
     # Final evaluation of the model
     score = model.evaluate(X_test, Y_test, verbose=0)
     print("Accuracy: %.2f%%" % (score[1]*100))
     scores.append(score[1]*100)
+    print(time.time()-start)
 
 print(scores)
