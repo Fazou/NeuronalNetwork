@@ -154,12 +154,12 @@ for n in range(0, n_split):
     model.add(Dropout(0.5))
     model.add(Dense(num_classes, activation='softmax'))
     # Compile model
-    epochs = 10
+    epochs = 20
     lrate = 0.01
     decay = lrate/epochs
 
     #load weights
-    #model.load_weights("..//weigths.h5")
+    #model.load_weights("..//weigths0.h5")
 
     sgd = SGD(lr=lrate, momentum=0.9, decay=decay, nesterov=False)
     model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
@@ -169,7 +169,7 @@ for n in range(0, n_split):
     #let's fit our model
 
     model.fit(X_train, Y_train, validation_data=(X_test, Y_test), epochs=epochs, batch_size=32)
-    model.save_weights("..//weigths"+str(n)+".h5")
+    model.save_weights("..//70weigths"+str(n)+".h5")
     # Final evaluation of the model
     score = model.evaluate(X_test, Y_test, verbose=0)
     print("Accuracy: %.2f%%" % (score[1]*100))
