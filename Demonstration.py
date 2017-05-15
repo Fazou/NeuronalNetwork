@@ -34,7 +34,7 @@ Y_test = []
 X_test = []
 Image_test = []
 
-liste_test = [6]
+liste_test = [52,654]
 #660 jaune bug !
 
 for k in range(0, 3):

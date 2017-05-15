@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import time
 
-img = cv2.imread("..//Data//2seancephoto//cylindrejaune//280.jpg",1)
+img = cv2.imread("..//Data//2seancephoto//cylindrejaune//350.jpg",1)
 
 cv2.imwrite('houghlines3.jpg',img)
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)

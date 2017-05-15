@@ -9,7 +9,7 @@ from scipy.cluster.vq import *
 from sklearn.preprocessing import StandardScaler
 print(cv2. __version__)
 
-for i in range(0,1500):
+for i in range(140,141):
     print(i)
     img = cv2.imread("..//Data//2seancephoto//cylindrejaune//"+str(i)+".jpg", 1)
     #img = cv2.imread("..//Data//2seancephoto//cylindrebleu//"+str(100)+".jpg", 1)
@@ -45,3 +45,5 @@ for i in range(0,1500):
         cv2.destroyAllWindows()
     except:
         print("Exitse pas"+str(i))
+
+cv2.imwrite('houghlines3.jpg',img2)
