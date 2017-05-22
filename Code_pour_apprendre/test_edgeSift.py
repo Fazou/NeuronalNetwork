@@ -9,7 +9,7 @@ from scipy.cluster.vq import *
 from sklearn.preprocessing import StandardScaler
 print(cv2. __version__)
 
-for i in range(140,141):
+for i in range(140,1000):
     print(i)
     img = cv2.imread("..//Data//2seancephoto//cylindrejaune//"+str(i)+".jpg", 1)
     #img = cv2.imread("..//Data//2seancephoto//cylindrebleu//"+str(100)+".jpg", 1)
@@ -17,9 +17,9 @@ for i in range(140,141):
     # Initiate STAR detector
     #orb = cv2.ORB()
     #orb = cv2.ORB(nfeatures=10, scoreType=cv2.ORB_FAST_SCORE,scaleFactor=1.9)
-    orb = cv2.ORB(edgeThreshold=10, patchSize=2, nlevels=6, scaleFactor=2.3, WTA_K=2,scoreType=cv2.ORB_HARRIS_SCORE, firstLevel=0, nfeatures=200)
-
-
+    #orb = cv2.ORB_create(edgeThreshold=10, patchSize=2, nlevels=6, scaleFactor=2.3, WTA_K=2,scoreType=cv2.ORB_HARRIS_SCORE, firstLevel=0, nfeatures=200)
+    orb = cv2.ORB()
+    print(orb)
     #descriptor = cv2.DescriptorExtractor_create("ORB")  # BRISK
     #cv2.DescriptorExtractor_create.compute(img, keypoints)
 
@@ -46,4 +46,3 @@ for i in range(140,141):
     except:
         print("Exitse pas"+str(i))
 
-cv2.imwrite('houghlines3.jpg',img2)

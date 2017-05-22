@@ -19,9 +19,10 @@ from sklearn.model_selection import KFold
 import time
 import cv2
 
+
+print(cv2.__version__)
+
 start = time.time()
-
-
 
 #resize image
 size = 70
@@ -34,7 +35,7 @@ Y_test = []
 X_test = []
 Image_test = []
 
-liste_test = [52,654]
+liste_test = [661]
 #660 jaune bug !
 
 for k in range(0, 3):
@@ -115,9 +116,11 @@ for k in range(0, 3):
         img = cv2.imread("Data/2seancephoto/" + categorie[k] + "/" + str(liste_test[i]) + ".jpg", 1)
         if (type(img) != type(None)):
             if(score2[a][1] > 0.5):
+                ge =5
                 cv2.circle(img,(50,50), 50, (0,0,255), -1)
+            cv2.putText(img,str(score2[a,1]),(10,400),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
             cv2.imshow('Display window', img)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
             a = a + 1
-
+            cv2.imwrite('test_final'+str(a)+'.jpg', img)

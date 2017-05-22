@@ -8,17 +8,6 @@ import time
 from sklearn.model_selection import KFold
 from PseudoGradient import Gradient
 import operator
-from keras.preprocessing.image import array_to_img, img_to_array, load_img
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D
-from keras.layers import Activation, Dropout, Flatten, Dense, Input
-from keras.constraints import maxnorm
-from keras.optimizers import SGD
-from keras.layers.convolutional import Conv2D
-from keras.layers.convolutional import MaxPooling2D
-from keras.applications.vgg16 import VGG16
-from keras.models import Model
-from keras.utils import np_utils
 #from transform import dataset
 import numpy as np
 import PIL
@@ -44,9 +33,9 @@ def kfolds(k, N, seed=None):
 
 #https://github.com/fchollet/keras/issues/4465 for VGG16 model
 
-nombrePhoto0 = 27
-nombrePhoto1 = 20
-nombrePhoto2 = 20
+nombrePhoto0 = 200
+nombrePhoto1 = 10
+nombrePhoto2 = 10
 
 nombrePhoto = [nombrePhoto0,nombrePhoto1,nombrePhoto2]
 
@@ -65,7 +54,7 @@ uniformResultatFauxPositif = [0] * n_split
 uniformResultatFauxNegatif = [0] * n_split
 scores = []
 
-for n in range(0, n_split):
+for n in range(0, 1):
     Y_train = []
     X_train = []
     Y_test = []
@@ -90,9 +79,11 @@ for n in range(0, n_split):
 
                 img0 = cv2.cvtColor(img0, cv2.COLOR_RGB2GRAY)
 
-                #cv2.imshow('Display window', img0)
-                #cv2.waitKey(0)
-                #cv2.destroyAllWindows()
+                cv2.imshow('Display window', img0)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
+                cv2.imwrite('img0.jpg',img0)
+
 
                 img0 = img0 * 1.0
 
@@ -104,9 +95,10 @@ for n in range(0, n_split):
 
                 grad_h = abs(Ex)
 
-                #cv2.imshow('Display window', grad_h)
-                #cv2.waitKey(0)
-                #cv2.destroyAllWindows()
+                cv2.imshow('Display window', grad_h)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
+                cv2.imwrite('houghl3.jpg',grad_h)
 
                 boxNbr = 10.  # nbre de cluster !
 
@@ -141,8 +133,9 @@ for n in range(0, n_split):
                     best_valeur[j] = (bin[valeur_point_max] + bin[valeur_point_max]) / 2.
                     descripteur[j] = med_valeur[j] * med_valeur[j] * best_valeur[j]
                 X_train.append(np.array(descripteur))
-                #plt.plot(descripteur)
-                #plt.show()
+                plt.plot(descripteur)
+                plt.show()
+                plt.savefig('train1.png')
 
                 if (k == 0):
                     Y_train.append(0)
@@ -174,9 +167,11 @@ for n in range(0, n_split):
 
                 Ex = abs(np.gradient(out)[1])
 
-                #cv2.imshow('Display window', grad_h)
-                #cv2.waitKey(0)
-                #cv2.destroyAllWindows()
+                cv2.imshow('Display window', grad_h)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
+                cv2.imwrite('houghl.jpg',grad_h)
+
 
                 min = np.min(Ex)
                 max = np.max(Ex)
@@ -217,8 +212,10 @@ for n in range(0, n_split):
                     best_valeur[j] = (bin[valeur_point_max] + bin[valeur_point_max]) / 2.
                     descripteur[j] = med_valeur[j] * med_valeur[j] * best_valeur[j]
                 X_test.append(np.array(descripteur))
-                #plt.plot(descripteur)
-                #plt.show()
+                plt.plot(descripteur)
+                plt.show()
+                plt.savefig('test1.png')
+
 
                 if (k == 0):
                     Y_test.append(0)
@@ -336,7 +333,7 @@ for i in range(len(grad_h[0])):
 #Maintenant que nous avons ce descripteur, il
 
 #hist = [sum(grad_h[:,i]) for i in range(len(grad_h[0]))]
-#plt.plot(stockvar)
-#plt.show()
+plt.plot(stockvar)
+plt.show()
 
 

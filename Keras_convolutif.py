@@ -1,3 +1,6 @@
+import sys
+print(sys.version)
+import tensorflow
 from keras.preprocessing.image import array_to_img, img_to_array, load_img
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
@@ -145,7 +148,7 @@ for n in range(0, n_split):
     #Let's build The CNN!!!!!
     num_classes = 2
     model = Sequential()
-    model.add(Conv2D(32, (3,3), input_shape=(size, size,1), padding='same', activation='relu', kernel_constraint=maxnorm(3)))
+    model.add(Conv2D(filters = 32,kernel_size =(3,3), input_shape=(size, size,1), padding='same', activation='relu', kernel_constraint=maxnorm(3)))
     model.add(Dropout(0.2))
     model.add(Conv2D(32, (3, 3), activation='relu', padding='same', kernel_constraint=maxnorm(3)))
     model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -169,7 +172,7 @@ for n in range(0, n_split):
     #let's fit our model
 
     model.fit(X_train, Y_train, validation_data=(X_test, Y_test), epochs=epochs, batch_size=32)
-    model.save_weights("..//70weigths"+str(n)+".h5")
+    #model.save_weights("..//70weigths"+str(n)+".h5")
     # Final evaluation of the model
     score = model.evaluate(X_test, Y_test, verbose=0)
     print("Accuracy: %.2f%%" % (score[1]*100))
