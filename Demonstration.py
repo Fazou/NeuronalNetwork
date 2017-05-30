@@ -18,6 +18,7 @@ import random
 from sklearn.model_selection import KFold
 import time
 import cv2
+import theano
 
 
 print(cv2.__version__)
@@ -35,7 +36,9 @@ Y_test = []
 X_test = []
 Image_test = []
 
-liste_test = [661]
+liste_test = [i for i in range(1000)]
+liste_test = [45,68]
+
 #660 jaune bug !
 
 for k in range(0, 3):
@@ -62,7 +65,7 @@ for k in range(0, 3):
             if (k == 2):
                 Y_test.append(1)
         except:
-            print("Erreur : Pas d'image avec ces valeurs !")
+            print("Erreur : Pas d'image avec ces valeurs !",k,i)
 
 
 # normalize inputs from 0-255 to 0.0-1.0
@@ -109,6 +112,7 @@ print("Accuracy: %.2f%%" % (score[1]*100))
 print("Duree de l'execution : ")
 print(time.time()-start)
 
+
 a = 0
 for k in range(0, 3):
     for i in range(len(liste_test)):
@@ -124,3 +128,4 @@ for k in range(0, 3):
             cv2.destroyAllWindows()
             a = a + 1
             cv2.imwrite('test_final'+str(a)+'.jpg', img)
+
